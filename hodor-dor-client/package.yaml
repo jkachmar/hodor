@@ -1,0 +1,58 @@
+name:                hodor-dor-client
+version:             0.0.1
+synopsis:            Haskell bindings to the getdor.com API
+description:         Client HTTP API bindings to Dor, in Haskell
+homepage:            https://github.com/jkachmar/hodor#readme
+license:             MIT
+author:              jkachmar
+copyright:           2017 Joe Kachmar
+category:            Web
+
+default-extensions:
+  - NoImplicitPrelude
+  - OverloadedStrings
+
+dependencies:
+  - hodor-model         == 0.0.0.1
+
+  - aeson               >= 1.0  && < 1.1
+  - base                >= 4.7  && < 5
+  - composite-aeson     >= 0.3  && < 0.4
+  - composite-base      >= 0.3  && < 0.4
+  - composite-opaleye   >= 0.3  && < 0.4
+  - classy-prelude      >= 1.2  && < 1.3
+  - fast-logger         >= 2.4  && < 2.5
+  - http-client         >= 0.5  && < 0.6
+  - http-client-tls     >= 0.3  && < 0.4
+  - http-types          >= 0.9  && < 0.10
+  - lens                >= 4.15 && < 4.16
+  - monad-logger        >= 0.3  && < 0.4
+  - mtl                 >= 2.2  && < 2.3
+  - opaleye             >= 0.5  && < 0.6
+  - postgresql-simple   >= 0.5  && < 0.6
+  - product-profunctors >= 0.7  && < 0.8
+  - profunctors         >= 5.2  && < 5.3
+  - raw-strings-qq      >= 1.1  && < 1.2
+  - resource-pool       >= 0.2  && < 0.3
+  - servant             >= 0.10 && < 0.11
+  - servant-client      >= 0.10 && < 0.11
+  - stm                 >= 2.4  && < 2.5
+  - text                >= 1.2  && < 1.3
+  - time                >= 1.6  && < 1.7
+
+ghc-options:
+  - -Wall
+  - -Werror
+
+executables:
+  hodor-dor-client-exe:
+    source-dirs:      app
+    main:             Main.hs
+    ghc-options:      -threaded -rtsopts -with-rtsopts=-N
+    dependencies:
+      - hodor-dor-client
+      - http-client     >= 0.5  && < 0.6
+      - http-client-tls >= 0.3  && < 0.4
+
+library:
+  source-dirs:        src
