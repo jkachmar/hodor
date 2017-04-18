@@ -15,4 +15,4 @@ extra-deps:
 
 packages:
 - '.'
-- '../hodor-model'
+- '../hodor-common'

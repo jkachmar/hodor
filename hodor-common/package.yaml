@@ -1,6 +1,6 @@
-name:                hodor-model
+name:                hodor-common
 version:             0.0.0.1
-synopsis:            Data model and common types for hodor
+synopsis:            Data model and common types/functions for hodor
 description:         Composite database model and common types for hodor
 homepage:            https://github.com/jkachmar/hodor#readme
 license:             MIT

@@ -1,5 +1,5 @@
 name:                hodor-dor-client
-version:             0.0.1
+version:             0.0.0.1
 synopsis:            Haskell bindings to the getdor.com API
 description:         Client HTTP API bindings to Dor, in Haskell
 homepage:            https://github.com/jkachmar/hodor#readme
@@ -13,7 +13,7 @@ default-extensions:
   - OverloadedStrings
 
 dependencies:
-  - hodor-model         == 0.0.0.1
+  - hodor-common         == 0.0.0.1
 
   - aeson               >= 1.0  && < 1.1
   - base                >= 4.7  && < 5
