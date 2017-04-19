@@ -16,16 +16,16 @@
 -- Opaleye layer for Dor tables.
 --
 module Hodor.Model.Dor
-  ( -- * Dor Haskell value and Postgres column records
+  ( -- * Dor Haskell value and Postgres column Records
     DorViewRec, DorWriteRec, DorViewRecCols, DorWriteRecCols
 
     -- * Dor Haskell value lenses
-  , fDorId, fDorShortCode, fDorFloor, fDorInCount, fDorOutCount, fDorSumInCount
+  , fDorId, fDorLocationId, fDorInCount, fDorOutCount, fDorSumInCount
   , fDorSumOutCount, fDorTimestamp, fDorCreated
   , fDorIdMay, fDorCreatedMay
 
     -- * Dor Postgres column lenses
-  , cDorId, cDorShortCode, cDorFloor, cDorInCount, cDorOutCount, cDorSumInCount
+  , cDorId, cDorLocationId, cDorInCount, cDorOutCount, cDorSumInCount
   , cDorSumOutCount, cDorTimestamp, cDorCreated
   , cDorIdMay, cDorCreatedMay
 
@@ -37,12 +37,11 @@ module Hodor.Model.Dor
 -- Base imports
 import           ClassyPrelude     hiding (optional)
 import           Data.Int          (Int16)
-import           Data.Text         (Text)
 
 -- Composite
 import           Composite.Opaleye (defaultRecTable)
-import           Composite.TH      (withLensesAndProxies)
 import           Composite.Record  ((:->), Record)
+import           Composite.TH      (withLensesAndProxies)
 
 -- Database imports
 import           Opaleye           hiding (null)
@@ -59,13 +58,9 @@ withLensesAndProxies [d|
   type CDorId = "id" :-> Column PGInt4
   -- ^ Auto-incrementing integer ID.
 
-  type FDorShortCode = "short_code" :-> Text
-  type CDorShortCode = "short_code" :-> Column PGText
-  -- ^ Building identifier.
-
-  type FDorFloor = "location" :-> Text
-  type CDorFloor = "location" :-> Column PGText
-  -- ^ Human readable description of the location.
+  type FDorLocationId = "location_id" :-> Int32
+  type CDorLocationId = "location_id" :-> Column PGInt4
+  -- ^ Building location id, referencing "locations" table.
 
   type FDorInCount = "in_count" :-> Int16
   type CDorInCount = "in_count" :-> Column PGInt2
@@ -103,11 +98,10 @@ withLensesAndProxies [d|
   -- ^ Timestamp of daily harvesting/DB insertion.
   |]
 
--- | Frame containing Haskell-level @'Dor\''@ representation.
+-- | Record containing Haskell-level @'Dor\''@ view representation.
 type DorViewRec =
   '[ FDorId
-   , FDorShortCode
-   , FDorFloor
+   , FDorLocationId
    , FDorInCount
    , FDorOutCount
    , FDorSumInCount
@@ -116,10 +110,10 @@ type DorViewRec =
    , FDorCreated
    ]
 
+-- | Record containing Haskell-level @'Dor\''@ write representation.
 type DorWriteRec =
   '[ FDorIdMay
-   , FDorShortCode
-   , FDorFloor
+   , FDorLocationId
    , FDorInCount
    , FDorOutCount
    , FDorSumInCount
@@ -128,11 +122,10 @@ type DorWriteRec =
    , FDorCreatedMay
    ]
 
--- | Frame containing Postgres-level @'Dor\''@ read representation.
+-- | Record containing Postgres-level @'Dor\''@ view representation.
 type DorViewRecCols =
   '[ CDorId
-   , CDorShortCode
-   , CDorFloor
+   , CDorLocationId
    , CDorInCount
    , CDorOutCount
    , CDorSumInCount
@@ -141,11 +134,10 @@ type DorViewRecCols =
    , CDorCreated
    ]
 
--- | Frame containing Postgres-level @'Dor\''@ write representation.
+-- | Record containing Postgres-level @'Dor\''@ write representation.
 type DorWriteRecCols =
   '[ CDorIdMay
-   , CDorShortCode
-   , CDorFloor
+   , CDorLocationId
    , CDorInCount
    , CDorOutCount
    , CDorSumInCount

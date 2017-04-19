@@ -26,8 +26,8 @@ import           Data.Traversable          (mapAccumL)
 
 -- Composite and related
 import           Composite.Record
-import           Data.Pool                  (Pool)
-import           Database.PostgreSQL.Simple (Connection)
+-- import           Data.Pool                  (Pool)
+-- import           Database.PostgreSQL.Simple (Connection)
 
 -- Servant and related
 import           Network.HTTP.Types.Status  (forbidden403)
@@ -44,7 +44,7 @@ data Config
   = Config
   { bearerTVar   :: TVar BearerToken -- ^ TVar for the application bearer token
   , client       :: DorClient        -- ^ Dor API query record
-  , connPool     :: Pool Connection  -- ^ PostgreSQL Connection pool
+  -- , connPool     :: Pool Connection  -- ^ PostgreSQL Connection pool
   , refreshToken :: RefreshToken     -- ^ Global application refresh token
   }
 
@@ -62,10 +62,9 @@ runClientApp cfg = liftBase . runExceptT . (flip runReaderT cfg)
 --------------------------------------------------------------------------------
 
 createHourlyRecord
-  :: TimeZone -> Text -> Text
-  -> (Int16, Int16) -> HourlyOccupancy
+  :: TimeZone -> Int32 -> (Int16, Int16) -> HourlyOccupancy
   -> ((Int16, Int16), (Record DorWriteRec))
-createHourlyRecord tz building location (accIn, accOut) hourOcc =
+createHourlyRecord tz locId (accIn, accOut) hourOcc =
   let hourIn    = fromIntegral (hourOcc ^. hoInCount)  :: Int16
       hourOut   = fromIntegral (hourOcc ^. hoOutCount) :: Int16
       sumIn     = accIn  + hourIn
@@ -73,8 +72,7 @@ createHourlyRecord tz building location (accIn, accOut) hourOcc =
       timestamp = localTimeToUTC tz (hourOcc ^. hoDateTime)
   in do
     let record = (  Nothing
-                :*: building
-                :*: location
+                :*: locId
                 :*: hourIn
                 :*: hourOut
                 :*: sumIn
@@ -91,8 +89,9 @@ foldHourlyOccupancies
   -> t (Record DorWriteRec)
 foldHourlyOccupancies hourOccs =
   -- FIXME: `hoursToTimeZone` should be changed to some `TimeZone` from the DB
-  -- FIXME: "FooBuilding" and "BarLocation" should come from the DB as well
-  let helper = createHourlyRecord (hoursToTimeZone 0) "FooBuilding" "BarLocation"
+  -- FIXME:  `locId` should come from the DB as well
+  let locId  = 0
+      helper = createHourlyRecord (hoursToTimeZone 0) locId
       (_, records) = mapAccumL helper (0, 0) hourOccs
   in records
 

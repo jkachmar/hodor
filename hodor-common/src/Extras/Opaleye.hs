@@ -1,5 +1,5 @@
 -- |
--- Module      : Extras.Servant
+-- Module      : Extras.Opaleye
 -- Copyright   : (c) Joe Kachmar 2017
 -- License     : MIT
 --

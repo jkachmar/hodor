@@ -2,6 +2,7 @@ module Main where
 
 import           ClassyPrelude
 import           Control.Lens
+import           Data.Time
 import           Network.HTTP.Client     (newManager)
 import           Network.HTTP.Client.TLS (tlsManagerSettings)
 
@@ -22,13 +23,11 @@ main = do
                    , refreshToken = refreshToken'
                    }
 
-  let day = ModifiedJulianDay 57847
-
-  occ <- runClientApp cfg $ getDailyOccupancy 1000 1500 day
+  -- Get the previous day's date, given the current machine's local time
+  day <- (addDays (-1)) . localDay . zonedTimeToLocalTime <$> getZonedTime
+  occ <- runClientApp cfg $ getDailyOccupancy 1124 1362 day
 
   case occ of
     Left e  -> print e
-
-    Right v -> do
-      let hours = v ^. doHours
-      print $ foldHourlyOccupancies hours
+    Right v ->
+      print $ foldHourlyOccupancies $ view doHours v

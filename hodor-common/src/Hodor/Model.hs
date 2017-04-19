@@ -16,10 +16,10 @@
 --
 module Hodor.Model
   ( -- * Table definitions
-    dorTbl
+    dorTbl, locTbl
 
     -- * Query builders
-  , dorQ
+  , dorQ, locQ
 
     -- * Re-exports
   , module X
@@ -28,17 +28,19 @@ module Hodor.Model
 --------------------------------------------------------------------------------
 
 -- Base imports
-import           ClassyPrelude     hiding (optional)
-import           Composite.Record  (Record)
+import           ClassyPrelude         hiding (optional)
+import           Composite.Record      (Record)
 
 -- Database imports
-import           Opaleye           hiding (null)
+import           Opaleye               hiding (null)
 
 -- Local imports
 import           Hodor.Model.Dor
+import           Hodor.Model.Locations
 
 -- Re-exports
-import           Hodor.Model.Dor   as X hiding (dorQ', dorTbl')
+import           Hodor.Model.Dor       as X hiding (dorQ', dorTbl')
+import           Hodor.Model.Locations as X hiding (locQ', locTbl')
 
 --------------------------------------------------------------------------------
 
@@ -54,6 +56,10 @@ schema = TableWithSchema "hodor"
 dorTbl :: Table (Record DorWriteRecCols) (Record DorViewRecCols)
 dorTbl = dorTbl' schema
 
+-- | Database table for @'Location'@s.
+locTbl :: Table (Record LocWriteRecCols) (Record LocViewRecCols)
+locTbl = locTbl' schema
+
 --------------------------------------------------------------------------------
 
 --
@@ -63,3 +69,7 @@ dorTbl = dorTbl' schema
 -- | Query to select '@Dor'@s from the database.
 dorQ :: QueryArr () (Record DorViewRecCols)
 dorQ = dorQ' dorTbl
+
+-- | Query to select '@Dor'@s from the database.
+locQ :: QueryArr () (Record LocViewRecCols)
+locQ = locQ' locTbl
