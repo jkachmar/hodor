@@ -1,0 +1,13 @@
+resolver: lts-8.11
+
+flags: {}
+
+extra-package-dbs: []
+
+extra-deps:
+- composite-base-0.3.0.0
+- composite-opaleye-0.3.0.0
+- refurb-0.2.2.0
+
+packages:
+- '.'
