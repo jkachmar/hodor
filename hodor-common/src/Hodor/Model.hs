@@ -50,7 +50,7 @@ import           Hodor.Model.Locations as X hiding (locQ', locTbl')
 
 -- | Database schema for this project.
 schema :: String -> TableProperties write view -> Table write view
-schema = TableWithSchema "hodor"
+schema = TableWithSchema "public"
 
 -- | Database table for @'Dor'@s.
 dorTbl :: Table (Record DorWriteRecCols) (Record DorViewRecCols)

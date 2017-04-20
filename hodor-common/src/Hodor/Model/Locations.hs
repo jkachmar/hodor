@@ -20,11 +20,11 @@ module Hodor.Model.Locations
     LocViewRec, LocWriteRec, LocViewRecCols, LocWriteRecCols
 
     -- * Location Haskell value lenses
-  , fLocId, fLocShortCode, fLocDesc, fLocCreated
+  , fLocId, fLocTeamId, fLocStoreId, fLocShortCode, fLocDesc, fLocCreated
   , fLocIdMay, fLocCreatedMay
 
     -- * Location Postgres column lenses
-  , cLocId, cLocShortCode, cLocDesc, cLocCreated
+  , cLocId, cLocTeamId, cLocStoreId, cLocShortCode, cLocDesc, cLocCreated
   , cLocIdMay, cLocCreatedMay
 
   , locTbl', locQ'
@@ -54,6 +54,14 @@ withLensesAndProxies [d|
   type FLocId = "id" :-> Int32
   type CLocId = "id" :-> Column PGInt4
   -- ^ Auto-incrementing integer ID.
+
+  type FLocTeamId = "team_id" :-> Text
+  type CLocTeamId = "team_id" :-> Column PGText
+  -- ^ Dor team ID.
+
+  type FLocStoreId = "store_id" :-> Text
+  type CLocStoreId = "store_id" :-> Column PGText
+  -- ^ Dor store ID.
 
   type FLocShortCode = "short_code" :-> Text
   type CLocShortCode = "short_code" :-> Column PGText

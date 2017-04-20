@@ -1,11 +1,8 @@
 --------------------------------------------------------------------------------
--- drop.sql: Drop database
+-- init.sql: Initialize hodor's database
 --------------------------------------------------------------------------------
 
-BEGIN;
+CREATE DATABASE hodor;
+CREATE USER     hodor;
 
-DROP TABLE hodor.dor;
-DROP TABLE hodor.gnine;
-DROP SCHEMA hodor;
-
-COMMIT;
+GRANT ALL PRIVILEGES ON DATABASE hodor TO hodor;
